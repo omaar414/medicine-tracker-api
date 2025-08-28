@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: medicine-tracker-api
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build && npx prisma migrate deploy
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DEFAULT_TIMEZONE
+        value: America/Puerto_Rico
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: BCRYPT_SALT_ROUNDS
+        value: 10
+      - key: JWT_ACCESS_EXPIRES
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES
+        value: 7d
+      - key: LOG_LEVEL
+        value: info
+    healthCheckPath: /api/health

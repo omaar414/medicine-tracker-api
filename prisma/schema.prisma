@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  fullName        String
+  timezone        String   @default("America/Puerto_Rico")
+  emailEnabled    Boolean  @default(true)
+  quietHoursStart String?  // Format: "HH:mm"
+  quietHoursEnd   String?  // Format: "HH:mm"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  medicines Medicine[]
+  schedules Schedule[]
+
+  @@map("users")
+}
+
+model Medicine {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  dose      Float
+  unit      String
+  notes     String?
+  symptoms  String[]  @default([]) // Array de síntomas
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedules Schedule[]
+  inventory Inventory?
+  doseLogs  DoseLog[]
+
+  @@map("medicines")
+}
+
+model Schedule {
+  id          String   @id @default(cuid())
+  medicineId  String
+  timesOfDay  String[] // Array of "HH:mm" strings
+  startDate   DateTime
+  endDate     DateTime?
+  daysOfWeek  Int[]?   // Array of 0-6 (Sunday-Saturday)
+  createdAt   DateTime @default(now())
+
+  medicine Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  @@map("schedules")
+}
+
+model DoseLog {
+  id          String      @id @default(cuid())
+  medicineId  String
+  scheduledAt DateTime
+  takenAt     DateTime?
+  status      DoseStatus  @default(SCHEDULED)
+  createdAt   DateTime    @default(now())
+
+  medicine Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  @@unique([medicineId, scheduledAt])
+  @@map("dose_logs")
+}
+
+model Inventory {
+  id             String   @id @default(cuid())
+  medicineId     String   @unique
+  currentPills   Int      @default(0)
+  lowThreshold   Int      @default(10)
+  refillsTotal   Int      @default(0)
+  refillsUsed    Int      @default(0)
+  lastUpdatedAt  DateTime @default(now())
+
+  medicine Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  @@map("inventory")
+}
+
+enum DoseStatus {
+  SCHEDULED
+  TAKEN
+  MISSED
+  SKIPPED
+}
