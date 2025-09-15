@@ -4,16 +4,16 @@ A production-ready NestJS backend for a medication reminder web app that deploys
 
 ## Features
 
-- 🔐 **Authentication**: JWT-based auth with bcrypt password hashing
-- 💊 **Medicine Management**: CRUD operations for medications
-- 📅 **Schedule Management**: Flexible dosing schedules with time and day constraints
-- 📦 **Inventory Tracking**: Pill counting and refill management
-- ✅ **Dose Tracking**: Confirm/skip doses with automatic inventory updates
-- 🔔 **Smart Notifications**: Email reminders via Zapier webhook
-- ⏰ **Background Jobs**: BullMQ-powered reminder engine
-- 🏥 **Health Monitoring**: Database and Redis health checks
-- 📚 **API Documentation**: Swagger/OpenAPI integration
-- 🛡️ **Security**: Input validation, error handling, and logging
+-  **Authentication**: JWT-based auth with bcrypt password hashing
+-  **Medicine Management**: CRUD operations for medications
+-  **Schedule Management**: Flexible dosing schedules with time and day constraints
+-  **Inventory Tracking**: Pill counting and refill management
+-  **Dose Tracking**: Confirm/skip doses with automatic inventory updates
+-  **Smart Notifications**: Email reminders via Zapier webhook
+-  **Background Jobs**: BullMQ-powered reminder engine
+-  **Health Monitoring**: Database and Redis health checks
+-  **API Documentation**: Swagger/OpenAPI integration
+-  **Security**: Input validation, error handling, and logging
 
 ## Tech Stack
 
